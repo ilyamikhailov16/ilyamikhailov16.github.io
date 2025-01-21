@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aglib.audio_guru &mdash; Audio Guru 0.1.0-dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee2d09ae"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Audio Guru
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">aglib</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Audio Guru</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aglib.audio_guru</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for aglib.audio_guru</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.models.mood_model</span> <span class="kn">import</span> <span class="n">MoodModel</span><span class="p">,</span> <span class="n">AudioProcessorMood</span>
+<span class="kn">from</span> <span class="nn">.models.genre_model</span> <span class="kn">import</span> <span class="n">GenreModel</span><span class="p">,</span> <span class="n">AudioProcessorGenre</span>
+<span class="kn">from</span> <span class="nn">.models.voice_model</span> <span class="kn">import</span> <span class="n">VoiceModel</span><span class="p">,</span> <span class="n">AudioProcessorVoice</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+<span class="kn">import</span> <span class="nn">librosa</span>
+
+
+<div class="viewcode-block" id="AudioGuru">
+<a class="viewcode-back" href="../../aglib.html#aglib.audio_guru.AudioGuru">[docs]</a>
+<span class="k">class</span> <span class="nc">AudioGuru</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to process audio files and predict their mood and genre.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        models (list): A list of models for mood and genre prediction.</span>
+<span class="sd">        audio_processors (list): A list of audio processors corresponding to the models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes AudioGuru, loads models, and sets up audio processors.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">MoodModel</span><span class="p">(),</span> <span class="n">GenreModel</span><span class="p">()]</span>  <span class="c1"># VoiceModel()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audio_processors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">AudioProcessorMood</span><span class="p">(),</span>
+            <span class="n">AudioProcessorGenre</span><span class="p">(),</span>
+        <span class="p">]</span>  <span class="c1"># AudioProcessorVoice()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_up_models</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_up_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the machine learning models.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">load_model</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AudioGuru.get_audio_tempo">
+<a class="viewcode-back" href="../../aglib.html#aglib.audio_guru.AudioGuru.get_audio_tempo">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_audio_tempo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the tempo of the audio and classifies it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            audio (ndarray): Audio data as a NumPy array.</span>
+<span class="sd">            sr (int): Sample rate of the audio.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Classification of the tempo as one of </span>
+<span class="sd">                &quot;very slow&quot;, &quot;slow&quot;, &quot;medium&quot;, &quot;fast&quot;, or &quot;very fast&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tempo</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">tempo</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audio</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">tempo</span> <span class="o">&lt;=</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;very slow&quot;</span>
+        <span class="k">elif</span> <span class="n">tempo</span> <span class="o">&gt;</span> <span class="mi">60</span> <span class="ow">and</span> <span class="n">tempo</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;slow&quot;</span>
+        <span class="k">elif</span> <span class="n">tempo</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="ow">and</span> <span class="n">tempo</span> <span class="o">&lt;=</span> <span class="mi">120</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;medium&quot;</span>
+        <span class="k">elif</span> <span class="n">tempo</span> <span class="o">&gt;</span> <span class="mi">120</span> <span class="ow">and</span> <span class="n">tempo</span> <span class="o">&lt;=</span> <span class="mi">160</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;fast&quot;</span>
+        <span class="k">elif</span> <span class="n">tempo</span> <span class="o">&gt;</span> <span class="mi">160</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;very fast&quot;</span></div>
+
+
+<div class="viewcode-block" id="AudioGuru.process_audio">
+<a class="viewcode-back" href="../../aglib.html#aglib.audio_guru.AudioGuru.process_audio">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes the audio file to predict its mood, genre, and tempo.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            audio_path (str): The file path of the audio to be processed.</span>
+<span class="sd">            labels (tuple[tuple[str]]): A tuple of mood and genre labels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[str]: A list of predicted tags, including mood, genre, and tempo.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">audio</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">audio_processor</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">audio_processors</span><span class="p">,</span> <span class="n">labels</span>
+        <span class="p">):</span>
+            <span class="n">audio_features</span> <span class="o">=</span> <span class="n">audio_processor</span><span class="o">.</span><span class="n">process_data</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">audio_features</span><span class="p">,</span> <span class="n">label</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_audio_tempo</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span>
+        <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tempo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tags</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes the audio file and generates an output string with predictions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): The file path of the audio to be processed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A formatted string containing the predictions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;energetic&quot;</span><span class="p">,</span> <span class="s2">&quot;dramatic&quot;</span><span class="p">,</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;romantic&quot;</span><span class="p">,</span> <span class="s2">&quot;sad&quot;</span><span class="p">),</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;classical&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rap / rap-rock&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;metal / punk&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;popular&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">output_tag_information</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Приветствую тебя, о путник в мире мелодий! Я — премудрый AudioGuru,</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;и сегодня я поделюсь с тобой твоими музыкальными изысканиями.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Ты подал мне аудиотреки, а я, как великий мастер звуковых искусств, разметил их.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Вот, что получилось:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">mood</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_audio</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">pattern</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">- Название трека: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;- Настроение: </span><span class="si">{</span><span class="n">mood</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;- Жанр: </span><span class="si">{</span><span class="n">genre</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;- Темп: </span><span class="si">{</span><span class="n">tempo</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="c1"># f&#39;- Голос: {voice}\n&#39;</span>
+        <span class="p">)</span>
+
+        <span class="n">output_tag_information</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">output_tag_information</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Не удивляйся, если что-то не совпало с твоими ожиданиями — даже премудрого AudioGuru иногда подводит слух!&quot;</span>
+
+        <span class="k">return</span> <span class="n">output_tag_information</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Moderate Clown Troupe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

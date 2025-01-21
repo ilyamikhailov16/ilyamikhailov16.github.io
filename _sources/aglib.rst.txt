@@ -1,0 +1,29 @@
+aglib package
+=============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   aglib.models
+
+Submodules
+----------
+
+aglib.audio\_guru module
+------------------------
+
+.. automodule:: aglib.audio_guru
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aglib
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,55 @@
+aglib.models package
+====================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   aglib.models.genre_model
+   aglib.models.mood_model
+   aglib.models.voice_model
+
+Submodules
+----------
+
+aglib.models.audio\_processor module
+------------------------------------
+
+.. automodule:: aglib.models.audio_processor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.early\_stopping module
+-----------------------------------
+
+.. automodule:: aglib.models.early_stopping
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.model module
+-------------------------
+
+.. automodule:: aglib.models.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.plot module
+------------------------
+
+.. automodule:: aglib.models.plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aglib.models
+   :members:
+   :undoc-members:
+   :show-inheritance:

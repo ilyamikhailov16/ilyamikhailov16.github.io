@@ -1,0 +1,29 @@
+aglib.models.genre\_model package
+=================================
+
+Submodules
+----------
+
+aglib.models.genre\_model.audio\_processor\_genre module
+--------------------------------------------------------
+
+.. automodule:: aglib.models.genre_model.audio_processor_genre
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.genre\_model.genre\_model module
+---------------------------------------------
+
+.. automodule:: aglib.models.genre_model.genre_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aglib.models.genre_model
+   :members:
+   :undoc-members:
+   :show-inheritance:

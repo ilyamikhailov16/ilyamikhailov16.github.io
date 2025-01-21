@@ -1,0 +1,29 @@
+aglib.models.voice\_model package
+=================================
+
+Submodules
+----------
+
+aglib.models.voice\_model.audio\_processor\_voice module
+--------------------------------------------------------
+
+.. automodule:: aglib.models.voice_model.audio_processor_voice
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.voice\_model.voice\_model module
+---------------------------------------------
+
+.. automodule:: aglib.models.voice_model.voice_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aglib.models.voice_model
+   :members:
+   :undoc-members:
+   :show-inheritance:

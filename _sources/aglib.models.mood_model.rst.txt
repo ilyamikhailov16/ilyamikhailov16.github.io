@@ -1,0 +1,29 @@
+aglib.models.mood\_model package
+================================
+
+Submodules
+----------
+
+aglib.models.mood\_model.audio\_processor\_mood module
+------------------------------------------------------
+
+.. automodule:: aglib.models.mood_model.audio_processor_mood
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aglib.models.mood\_model.mood\_model module
+-------------------------------------------
+
+.. automodule:: aglib.models.mood_model.mood_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aglib.models.mood_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
